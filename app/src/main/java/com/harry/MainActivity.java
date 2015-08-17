@@ -14,6 +14,8 @@ public class MainActivity extends AppCompatActivity implements ConnectionListene
     TextView text;
     NetworkConnection networkConnection;
     ArrayList<Model> list;
+    String url = "http://api.geonames.org/postalCodeLookupJSON?postalcode=6600&country=AT&username=demo";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,33 +25,13 @@ public class MainActivity extends AppCompatActivity implements ConnectionListene
     }
 
     public void fetchDataOnButton(View view) {
-        networkConnection = new NetworkConnection();
+        networkConnection = new NetworkConnection(url);
         networkConnection.fetchData(this);
-//        new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Log.d("test", "run");
-//
-//                NetworkConnection networkConnection = new NetworkConnection();
-//                String string = networkConnection.downloadWithURLConnecton();
-//                list = networkConnection.parseData(string);
-//                for (Model m : list) {
-//                    Log.d("test", m.getPlace());
-//                }
-////                runOnUiThread(new Runnable() {
-////                    @Override
-////                    public void run() {
-////                        text.setText(list.get(0).getPlace());
-////                    }
-////                });
-//                updateUI();
-//            }
-//        }).start();
     }
 
-    public void updateUI(String string) {
+    public void updateUI(final ArrayList<Model> list) {
         Log.d("test", "update");
-        list = networkConnection.parseData(string);
+        this.list = list;
         for (Model m : list) {
             Log.d("test", m.getPlace());
         }

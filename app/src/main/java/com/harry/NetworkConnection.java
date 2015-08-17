@@ -25,7 +25,14 @@ import java.util.ArrayList;
  */
 public class NetworkConnection {
 //    ArrayList<Model> list;
+    String url;
 
+    public NetworkConnection() {
+
+    }
+    public  NetworkConnection(String url) {
+        this.url = url;
+    }
     public void fetchData(final ConnectionListener connectionListener) {
         new Thread(new Runnable() {
             @Override
@@ -33,12 +40,9 @@ public class NetworkConnection {
                 Log.d("test", "run");
 
                 NetworkConnection networkConnection = new NetworkConnection();
-                String string = networkConnection.downloadWithURLConnecton();
-//                list = networkConnection.parseData(string);
-//                for (Model m : list) {
-//                    Log.d("test", m.getPlace());
-//                }
-                connectionListener.updateUI(string);
+                String string = networkConnection.downloadWithURLConnecton(url);
+                ArrayList<Model> list = parseData(string);
+                connectionListener.updateUI(list);
             }
 
         }).start();
@@ -69,12 +73,9 @@ public class NetworkConnection {
         return input;
     }
 
-    public String downloadWithURLConnecton() {
-        String url = "http://api.geonames.org/postalCodeLookupJSON?postalcode=6600&country=AT&username=demo";
+    public String downloadWithURLConnecton(String url) {
         InputStream inputStream = null;
         StringBuilder b = new StringBuilder();
-
-
         try {
             URL url1 = new URL(url);
             try {
@@ -83,7 +84,6 @@ public class NetworkConnection {
                 inputStream = httpURLConnection.getInputStream();
                 BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
                 String line = "";
-
                 while ((line = br.readLine()) != null) {
                     b.append(line);
                 }
@@ -97,9 +97,9 @@ public class NetworkConnection {
     }
 
     public ArrayList<Model> parseData(String string) {
-        ArrayList<Model> modelList = new ArrayList<>();
-        Log.d("test", "got in parse data");
-        Log.d("test", string);
+        ArrayList<Model> modelList = new ArrayList<Model>();
+        Log.d("test", "parse data");
+//        Log.d("test", string);
         try {
             JSONObject object = new JSONObject(string);
             JSONArray array = object.optJSONArray("postalcodes");
