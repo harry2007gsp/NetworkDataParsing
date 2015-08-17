@@ -29,13 +29,15 @@ public class MainActivity extends AppCompatActivity implements ConnectionListene
         networkConnection.fetchData(this);
     }
 
+    // Interface method to be used by all Activities if any to get a way to have list from the worker
+    // thread and update the UI thread
     public void updateUI(final ArrayList<Model> list) {
         Log.d("test", "update");
         this.list = list;
         for (Model m : list) {
             Log.d("test", m.getPlace());
         }
-
+        // method to update UI
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

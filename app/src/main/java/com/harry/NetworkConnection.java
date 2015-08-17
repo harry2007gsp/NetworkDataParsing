@@ -34,6 +34,7 @@ public class NetworkConnection {
         this.url = url;
     }
     public void fetchData(final ConnectionListener connectionListener) {
+        // Background worker thread for downloading and parsing the data
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -42,9 +43,8 @@ public class NetworkConnection {
                 NetworkConnection networkConnection = new NetworkConnection();
                 String string = networkConnection.downloadWithURLConnecton(url);
                 ArrayList<Model> list = parseData(string);
-                connectionListener.updateUI(list);
+                connectionListener.updateUI(list); // Calling the method in UI and send the list to update the UI
             }
-
         }).start();
     }
 
@@ -73,6 +73,7 @@ public class NetworkConnection {
         return input;
     }
 
+    // For downloading the content at given url
     public String downloadWithURLConnecton(String url) {
         InputStream inputStream = null;
         StringBuilder b = new StringBuilder();
@@ -96,6 +97,7 @@ public class NetworkConnection {
         return b.toString();
     }
 
+    // For parsing data at given downloaded string
     public ArrayList<Model> parseData(String string) {
         ArrayList<Model> modelList = new ArrayList<Model>();
         Log.d("test", "parse data");
